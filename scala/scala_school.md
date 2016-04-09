@@ -109,3 +109,91 @@ timesThree: (i: Int)Int
 scala> numbers.map(timesThree _)
 res45: List[Int] = List(3, 6, 9)
 ```
+
+### foreach
+`foreach` is very like `map`, except that `foreach` does not return the values.
+
+```
+scala> var ret = numbers.foreach( {i:Int => i*2} )
+ret: Unit = ()
+```
+NOTE: `Unit` just means `void`
+
+### filter
+`filter` will filter out any elements that does fit from the input list
+
+```
+scala> var numbers = List(1,2,3,4,5,6,7,8,9)
+numbers: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+scala> numbers.filter( (i:Int) => i%2==0 )
+res47: List[Int] = List(2, 4, 6, 8)
+
+scala> def isEven = (i:Int) => i%2 == 0
+isEven: Int => Boolean
+
+scala> numbers.filter(isEven)
+res48: List[Int] = List(2, 4, 6, 8)
+```
+
+### zip
+zip will combile two lists into one
+```
+scala> List(1,2,3).zip(List("a", "b", "c"))
+res49: List[(Int, String)] = List((1,a), (2,b), (3,c))
+
+// Now each element in the new list is a tuple
+```
+
+### partition
+`partition` will split the list into two sub lists, with a given function which returns boolean.
+```
+scala> numbers.partition(isEven)
+res58: (List[Int], List[Int]) = (List(2, 4, 6, 8),List(1, 3, 5, 7, 9))
+```
+
+### find
+`find` will try to find the first matched element, and return it.
+```
+
+scala> numbers
+res60: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+scala> numbers.find(isEven)
+res61: Option[Int] = Some(2)
+```
+
+### flatten
+flatten will flatten an nested list
+```
+scala> List(List(1,2), List(2,3))
+res62: List[List[Int]] = List(List(1, 2), List(2, 3))
+
+scala> List(List(1,2), List(2,3)).flatten
+res63: List[Int] = List(1, 2, 2, 3)
+```
+
+### flatMap
+As for a nested List, first do the mapping, and then do the flatten
+```
+
+scala> var nestedNumbers = List(List(1,2), List(2,3))
+nestedNumbers: List[List[Int]] = List(List(1, 2), List(2, 3))
+
+scala> nestedNumbers.flatMap(x => x.map( (i:Int)=>i*2 ))
+res64: List[Int] = List(2, 4, 4, 6)
+```
+It is the same as
+```
+scala> nestedNumbers.map((x: List[Int]) => x.map(_ * 2)).flatten
+```
+
+### Map
+All function combinators can be applied to Map. Map can be treated as a list of Two-element Tuple.
+```
+scala> var extensions = Map("a"->100, "b"->200, "c"->300, "d"->400)
+extensions: scala.collection.immutable.Map[String,Int] = Map(a -> 100, b -> 200, c -> 300, d -> 400)
+
+scala> extensions.filter( (entry:(String,Int)) => entry._2 > 200)
+res70: scala.collection.immutable.Map[String,Int] = Map(c -> 300, d -> 400)
+```
