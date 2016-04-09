@@ -77,3 +77,35 @@ var result = resThree match {
   case None => 0 * 2
 }
 ```
+
+## Function Combinators
+The function combinators are the stuff that can combine a function to the vector/collection, commonly including `map`, `foreach`, `filter`, `zip`, `partition`, etc.
+
+### map
+```
+scala> var numbers = List(1,2,3)
+numbers: List[Int] = List(1, 2, 3)
+
+// apply anonymous functions
+scala> numbers.map( (i:Int) => i*i )
+res42: List[Int] = List(1, 4, 9)
+
+scala> numbers.map( { i:Int => i*i } )
+res43: List[Int] = List(1, 4, 9)
+
+```
+
+instead of using the anonymous functions, you can also use the pre-defined functions, ;)
+```
+scala> def timesTwo(i:Int) = i*2
+timesTwo: (i: Int)Int
+
+scala> numbers.map(timesTwo)
+res44: List[Int] = List(2, 4, 6)
+
+scala> def timesThree(i:Int):Int = i*3
+timesThree: (i: Int)Int
+
+scala> numbers.map(timesThree _)
+res45: List[Int] = List(3, 6, 9)
+```
