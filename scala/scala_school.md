@@ -54,4 +54,26 @@ scala> numbers.get("three")
 res32: Option[Int] = None
 ```
 
-## a
+to continue the above
+
+```
+var resThree = numbers.get("three")
+// Now the resThree should be None
+// How to get its values
+
+// way 1
+var result = if (resThree.isDefined) {
+  resThree * 2
+} else {
+  0
+}
+
+// way 2
+var result = resThree.getorElse(0) * 2 // if resThree is None, then return 0 * 2; otherwise return real value * 2
+
+// way 3
+var result = resThree match {
+  case Some(n) => n * 2
+  case None => 0 * 2
+}
+```
