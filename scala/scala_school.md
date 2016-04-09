@@ -188,7 +188,7 @@ It is the same as
 scala> nestedNumbers.map((x: List[Int]) => x.map(_ * 2)).flatten
 ```
 
-### Map
+## Map
 All function combinators can be applied to Map. Map can be treated as a list of Two-element Tuple.
 ```
 scala> var extensions = Map("a"->100, "b"->200, "c"->300, "d"->400)
@@ -196,4 +196,103 @@ extensions: scala.collection.immutable.Map[String,Int] = Map(a -> 100, b -> 200,
 
 scala> extensions.filter( (entry:(String,Int)) => entry._2 > 200)
 res70: scala.collection.immutable.Map[String,Int] = Map(c -> 300, d -> 400)
+```
+
+
+## compose
+
+`compose` will compose two function together, to make a more complex function
+```
+scala> def f(s:String) = "f(" + s + ")"
+f: (s: String)String
+
+scala> def g(s:String) = "g(" + s + ")"
+g: (s: String)String
+
+scala> var fComposeG = f _ compose g _
+fComposeG: String => String = <function1>
+
+scala> fComposeG ("yay")
+res76: String = f(g(yay))
+```
+
+## andThen
+`andThen` looks very similar to `compose`. 
+```
+scala> var fAndThenG = f _ andThen g _
+fAndThenG: String => String = <function1>
+
+scala> fAndThenG("yay")
+res77: String = g(f(yay))
+```
+
+
+## partial function
+
+```
+
+scala> var one:PartialFunction[Int,String] = { case 1 => "one" }
+one: PartialFunction[Int,String] = <function1>
+
+scala> one.isDefinedAt(1)
+res78: Boolean = true
+
+scala> one.isDefinedAt(2)
+res79: Boolean = false
+
+scala> one(1)
+res80: String = one
+
+scala> one(2)
+scala.MatchError: 2 (of class java.lang.Integer)
+  at scala.PartialFunction$$anon$1.apply(PartialFunction.scala:253)
+    at scala.PartialFunction$$anon$1.apply(PartialFunction.scala:251)
+      at $anonfun$1.applyOrElse(<console>:10)
+        at $anonfun$1.applyOrElse(<console>:10)
+          at scala.runtime.AbstractPartialFunction.apply(AbstractPartialFunction.scala:36)
+            ... 33 elided
+            
+scala> var two:PartialFunction[Int,String] = { case 2 => "two" }
+two: PartialFunction[Int,String] = <function1>
+
+scala> var three: PartialFunction[Int, String] =  { case 3 => "three" }
+three: PartialFunction[Int,String] = <function1>
+
+scala> var wildcard: PartialFunction[Int,String] = { case _ => "soemthing else" }
+wildcard: PartialFunction[Int,String] = <function1>
+
+scala> var partial = one orElse two orElse three orElse wildcard
+partial: PartialFunction[Int,String] = <function1>
+
+scala> partial(1)
+res82: String = one
+
+scala> partial(2)
+res83: String = two
+
+scala> partial(4)
+res84: String = soemthing else
+```
+
+## Static Type
+
+Type checking ensures that every wrong program wont pass the compiling. But it does not guarantee
+all the right programs will pass.
+
+### parameters polymorphism
+
+### implicit type convert
+```
+scala> implicit def strToInt(x:String) = x.toInt
+warning: there was one feature warning; re-run with -feature for details
+strToInt: (x: String)Int
+
+scala> "123"
+res92: String = 123
+
+scala> val y:Int = "123"
+y: Int = 123
+
+scala> math.max("123", 111)
+res93: Int = 123
 ```
