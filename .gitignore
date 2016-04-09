@@ -1,0 +1,8 @@
+# java or scala
+*.class
+
+# python
+*.pyc
+
+# vim
+*.swp

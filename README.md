@@ -1,6 +1,6 @@
 # booknotes
 
-# Introduction
+## Introduction
  - cpp
  - python
  - scala
